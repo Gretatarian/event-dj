@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retirement DJ Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-4">
+
+  <h1 class="text-3xl font-bold mb-6 text-center text-blue-400">DJ Dashboard</h1>
+  <div id="player-container" class="space-y-4 max-w-md mx-auto"></div>
+
+  <script>
+    async function loadPlaylist() {
+      // In production, add a cache-busting query string so it always fetches the latest JSON
+      const response = await fetch('playlist.json?' + new Date().getTime());
+      const data = await response.json();
+      const container = document.getElementById('player-container');
+
+      data.tracks.forEach(track => {
+        const card = document.createElement('div');
+        card.className = "bg-gray-800 p-4 rounded-xl shadow-lg border border-gray-700";
+
+        if (track.type === 'audio') {
+          card.innerHTML = `
+            <h2 class="text-xl font-semibold mb-2">${track.title}</h2>
+            <audio controls class="w-full">
+              <source src="${track.url}" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          `;
+        } else if (track.type === 'youtube') {
+          card.innerHTML = `
+            <h2 class="text-xl font-semibold mb-2">${track.title}</h2>
+            <div class="relative pb-[56.25%] h-0 rounded-lg overflow-hidden">
+              <iframe class="absolute top-0 left-0 w-full h-full" 
+                src="https://www.youtube.com/embed/${track.videoId}?rel=0" 
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+            </div>
+          `;
+        }
+        container.appendChild(card);
+      });
+    }
+
+    loadPlaylist();
+  </script>
+</body>
+</html>
