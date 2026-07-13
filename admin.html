@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playlist Editor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8 text-gray-800">
+
+  <div class="max-w-lg mx-auto bg-white p-6 rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Add New Track</h1>
+    
+    <div class="space-y-4">
+      <select id="type" class="w-full p-2 border rounded">
+        <option value="audio">Direct Audio URL (.mp3)</option>
+        <option value="youtube">YouTube Video</option>
+      </select>
+      
+      <input type="text" id="title" placeholder="Track Title" class="w-full p-2 border rounded">
+      <input type="text" id="link" placeholder="Audio URL or YouTube Video ID" class="w-full p-2 border rounded">
+      
+      <button onclick="generateJSON()" class="w-full bg-blue-600 text-white font-bold py-2 rounded hover:bg-blue-700">
+        Generate JSON
+      </button>
+    </div>
+
+    <div class="mt-6">
+      <p class="text-sm text-gray-600 mb-2">Copy this JSON and update your playlist.json on GitHub:</p>
+      <textarea id="output" class="w-full h-48 p-2 border rounded bg-gray-50 font-mono text-sm" readonly></textarea>
+    </div>
+  </div>
+
+  <script>
+    // This is a simplified local generator. 
+    // It can be upgraded to automatically push to GitHub using their API.
+    const currentPlaylist = { tracks: [] };
+
+    function generateJSON() {
+      const type = document.getElementById('type').value;
+      const title = document.getElementById('title').value;
+      const link = document.getElementById('link').value;
+
+      const newTrack = {
+        id: Date.now().toString(),
+        type: type,
+        title: title
+      };
+
+      if (type === 'audio') newTrack.url = link;
+      if (type === 'youtube') newTrack.videoId = link; // Just needs the 11-character ID
+
+      currentPlaylist.tracks.push(newTrack);
+      document.getElementById('output').value = JSON.stringify(currentPlaylist, null, 2);
+    }
+  </script>
+</body>
+</html>
