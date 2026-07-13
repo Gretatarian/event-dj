@@ -1,0 +1,16 @@
+{
+  "tracks": [
+    {
+      "id": "1",
+      "type": "audio",
+      "title": "Welcome Fanfare",
+      "url": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+    {
+      "id": "2",
+      "type": "youtube",
+      "title": "Background Instrumental",
+      "videoId": "jfKfPfyJRdk" 
+    }
+  ]
+}
